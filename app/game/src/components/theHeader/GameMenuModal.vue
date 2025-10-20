@@ -1,6 +1,9 @@
 <script setup>
+import '@/assets/styles/modal.css'
 import { useNavigationGame } from '@/composables/useNavigationGame.js'
+import { useGameSaveStore } from '@/stores/gameSave'
 
+const gameSaveStore = useGameSaveStore()
 const { goToMainMenu, goToNewGame, goToGame, goToTableRecords } = useNavigationGame()
 
 const isOpenGameMenuModal = defineModel('isOpenGameMenuModal')
@@ -16,6 +19,7 @@ function navigateAndCloseGameMenuModal(targetNavigation) {
             goToNewGame()
             break
         case 'NewGame':
+            gameSaveStore.startNewGame()
             goToGame()
             break
         case 'TableRecords':
@@ -45,6 +49,7 @@ function navigateAndCloseGameMenuModal(targetNavigation) {
             <hr class="game-menu-modal_hr"/>
             <div class="game-menu-modal_menu-navigation">
                 <button
+                    v-show="gameSaveStore.isGameStarted"
                     @click="navigateAndCloseGameMenuModal('ContinueGame')"    
                 >
                     Продолжить
@@ -68,50 +73,3 @@ function navigateAndCloseGameMenuModal(targetNavigation) {
         </div>
     </div>
 </template>
-
-<style scoped>
-.game-menu-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-}
-
-.game-menu-modal {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 50vw;
-    height: 50vh;
-    background-color: black;
-    padding: 20px 20px;
-    border: 2px solid white;
-}
-
-.game-menu-modal_header {
-    display: flex;
-    justify-content: space-between;
-}
-
-.game-menu-modal_hr {
-    position: relative;
-    left: -20px;
-    width: calc(50vw + 40px);
-}
-
-.game-menu-modal_menu-navigation {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    gap: 16px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-</style>

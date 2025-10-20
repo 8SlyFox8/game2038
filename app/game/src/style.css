@@ -61,3 +61,32 @@ button:hover {
   background-color: white;
   color: black;
 }
+
+input {
+  width: 200px;
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-family: 'AlagardFont';
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  
+  box-shadow: 
+    -2px -2px 0 0 white,
+    -2px 2px 0 0 white,
+    2px -2px 0 0 white,
+    2px 2px 0 0 white;
+    
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
