@@ -1,6 +1,8 @@
 <script setup>
 import '@/assets/styles/modal.css'
 import { ref } from 'vue'
+import { useVuelidate } from '@vuelidate/core'
+import { maxLength, helpers } from '@vuelidate/validators'
 import { useNavigationGame } from '@/composables/useNavigationGame.js'
 import { useGameSaveStore } from '@/stores/gameSave'
 import { useRecordsStore } from '@/stores/records'
@@ -14,11 +16,24 @@ const isWinGame = defineModel('isWinGame')
 
 const playerName = ref('')
 
+const rules = {
+    playerName: {
+        maxLength: helpers.withMessage('Слишком длинное имя', maxLength(3)),
+        $autoDirty: true 
+    }
+}
+
+const v$ = useVuelidate(rules, { playerName })
+
 function closeGameRecordsModal() {
     isOpenGameRecordsModal.value = false
 }
 
 function navigateAndCloseGameRecordsModal(targetNavigation) {
+    if (v$.value.$invalid) {
+        playerName.value = 'P1'
+    }
+
     const nameToUse = playerName.value.trim() !== '' ? playerName.value : 'P1'
 
     recordsStore.addRecord(nameToUse, gameSaveStore.score)
@@ -55,9 +70,17 @@ function navigateAndCloseGameRecordsModal(targetNavigation) {
                 <p>
                     Вы набрали: {{ gameSaveStore.score }}
                 </p>
+                <p 
+                    v-for="error of v$.playerName.$errors" 
+                    :key="error.$uid"
+                    class="game-menu_error-message"
+                >
+                    {{ error.$message }}
+                </p>
                 <input
                     v-model="playerName"
                     placeholder="Ваше имя"
+                    :class="{ error: v$.playerName.$error }"
                 />
                 <button
                     @click="navigateAndCloseGameRecordsModal('NewGame')"  
@@ -78,3 +101,9 @@ function navigateAndCloseGameRecordsModal(targetNavigation) {
         </div>
     </div>
 </template>
+
+<style scoped>
+.game-menu_error-message {
+    color: red;
+}
+</style>
