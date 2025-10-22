@@ -11,9 +11,6 @@ const recordsStore = useRecordsStore()
 const gameSaveStore = useGameSaveStore()
 const { goToMainMenu, goToGame, goToTableRecords } = useNavigationGame()
 
-const isOpenGameRecordsModal = defineModel('isOpenGameRecordsModal')
-const isWinGame = defineModel('isWinGame')
-
 const playerName = ref('')
 
 const rules = {
@@ -25,19 +22,15 @@ const rules = {
 
 const v$ = useVuelidate(rules, { playerName })
 
-function closeGameRecordsModal() {
-    isOpenGameRecordsModal.value = false
-}
-
 function navigateAndCloseGameRecordsModal(targetNavigation) {
     if (v$.value.$invalid) {
         playerName.value = 'P1'
     }
 
     const nameToUse = playerName.value.trim() !== '' ? playerName.value : 'P1'
-
     recordsStore.addRecord(nameToUse, gameSaveStore.score)
-    closeGameRecordsModal()
+    playerName.value = ''
+
     switch (targetNavigation) {
         case 'NewGame':
             gameSaveStore.startNewGame()
@@ -57,12 +50,12 @@ function navigateAndCloseGameRecordsModal(targetNavigation) {
 
 <template>
     <div
-        v-show="isOpenGameRecordsModal"
+        v-show="gameSaveStore.isGameOver"
         class="game-menu-modal-overlay"
     >
         <div class="game-menu-modal">
             <div class="game-menu-modal_header">
-                <p v-if="isWinGame">Поздравляем!</p>
+                <p v-if="gameSaveStore.isWinGame">Поздравляем!</p>
                 <p v-else>Вы мертвы...</p>
             </div>
             <hr class="game-menu-modal_hr"/>

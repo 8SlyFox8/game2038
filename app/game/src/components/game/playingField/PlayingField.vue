@@ -3,10 +3,22 @@ import { computed } from 'vue'
 import EmptyCell from '@/components/game/playingField/EmptyCell.vue'
 import EnemyCell from '@/components/game/playingField/EnemyCell.vue'
 import { useGameSaveStore } from '@/stores/gameSave'
+import { useInput } from '@/composables/useInput'
 
 const gameSaveStore = useGameSaveStore()
 const filteredPlayingField = computed(() => {
     return gameSaveStore.playingField
+})
+
+useInput({
+    onArrowUp: () => gameSaveStore.move('up'),
+    onArrowDown: () => gameSaveStore.move('down'),
+    onArrowLeft: () => gameSaveStore.move('left'),
+    onArrowRight: () => gameSaveStore.move('right'),
+    onSwipeUp: () => gameSaveStore.move('up'),
+    onSwipeDown: () => gameSaveStore.move('down'),
+    onSwipeLeft: () => gameSaveStore.move('left'),
+    onSwipeRight: () => gameSaveStore.move('right'),
 })
 </script>
 

@@ -74,7 +74,7 @@ onUnmounted(() => {
 }
 
 .playing-field_enemy-cell_number {
-    font-size: 4vh;
+    font-size: 3vh;
 }
 
 .playing-field_enemy-face{
