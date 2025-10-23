@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue'
 
 export function useInput(callbacks) {
     const isDragging = ref(false)
@@ -10,18 +10,18 @@ export function useInput(callbacks) {
         switch (event.key) {
             case 'ArrowUp':
                 callbacks.onArrowUp()
-                break;
+                break
             case 'ArrowDown':
                 callbacks.onArrowDown()
-                break;
+                break
             case 'ArrowLeft':
                 callbacks.onArrowLeft()
-                break;
+                break
             case 'ArrowRight':
                 callbacks.onArrowRight()
-                break;
+                break
         }
-    };
+    }
 
     const handleMouseDown = (event) => {
         if (event.button === 0) {
@@ -29,7 +29,7 @@ export function useInput(callbacks) {
             startX.value = event.clientX
             startY.value = event.clientY
         }
-    };
+    }
 
     const handleMouseMove = (event) => {
         if (!isDragging.value) return
@@ -51,29 +51,29 @@ export function useInput(callbacks) {
                     callbacks.onSwipeUp()
                 }
             }
-            isDragging.value = false;
+            isDragging.value = false
         }
-    };
+    }
 
     const handleMouseUp = () => {
-        isDragging.value = false;
-    };
+        isDragging.value = false
+    }
 
     onMounted(() => {
-        window.addEventListener('keydown', handleKeyDown);
-        window.addEventListener('mousedown', handleMouseDown);
-        window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('mouseup', handleMouseUp);
-    });
+        window.addEventListener('keydown', handleKeyDown)
+        window.addEventListener('mousedown', handleMouseDown)
+        window.addEventListener('mousemove', handleMouseMove)
+        window.addEventListener('mouseup', handleMouseUp)
+    })
 
     onUnmounted(() => {
-        window.removeEventListener('keydown', handleKeyDown);
-        window.removeEventListener('mousedown', handleMouseDown);
-        window.removeEventListener('mousemove', handleMouseMove);
-        window.removeEventListener('mouseup', handleMouseUp);
-    });
+        window.removeEventListener('keydown', handleKeyDown)
+        window.removeEventListener('mousedown', handleMouseDown)
+        window.removeEventListener('mousemove', handleMouseMove)
+        window.removeEventListener('mouseup', handleMouseUp)
+    })
 
     return {
         isDragging,
-    };
+    }
 }

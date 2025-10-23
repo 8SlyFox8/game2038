@@ -13,8 +13,8 @@ export const useGameSaveStore = defineStore('gameSave', () => {
     }
 
     function resetPlayingField() {
-        isWinGame.value = false;
-        isGameOver.value = false;
+        isWinGame.value = false
+        isGameOver.value = false
         playingField.value = createEmptyPlayingField()
         placeTwoRandom()
         placeTwoRandom()
@@ -119,7 +119,7 @@ export const useGameSaveStore = defineStore('gameSave', () => {
     }
 
     function getCurrentScore() {
-        return playingField.value.reduce((total, number) => total + number, 0);
+        return playingField.value.reduce((total, number) => total + number, 0)
     }
 
     function areFieldsEqual(oldField, newField) {
@@ -128,18 +128,18 @@ export const useGameSaveStore = defineStore('gameSave', () => {
 
     function checkGameOver() {
         const canMove = playingField.value.some((number, index) => {
-            if (number === 0) return true;
-            const row = Math.floor(index / 4);
-            const column = index % 4;
+            if (number === 0) return true
+            const row = Math.floor(index / 4)
+            const column = index % 4
             
-            if (row < 3 && playingField.value[index + 4] === number) return true;
-            if (column < 3 && playingField.value[index + 1] === number) return true;
+            if (row < 3 && playingField.value[index + 4] === number) return true
+            if (column < 3 && playingField.value[index + 1] === number) return true
 
-            return false;
-        });
+            return false
+        })
 
         if (!canMove) {
-            isGameOver.value = true;
+            isGameOver.value = true
         }
     }
 
